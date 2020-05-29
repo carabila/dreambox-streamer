@@ -1,0 +1,20 @@
+html {
+    height: 99%;
+}
+
+body {
+    height: 100%;
+}
+
+div.control {
+    float: left;
+    height: 100%;
+    width: 20%;
+    background-color: salmon;
+}
+div.video {
+    float: left;
+    height: 100%;
+    width: 80%;
+    background-color: rgb(114, 250, 209);
+}
