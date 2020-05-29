@@ -8,6 +8,7 @@ const app = express();
 
 const host = process.env.DM_HOST;
 const audioBitRate = process.env.DM_AUDIO_BITRATE;
+const streamTimeout = process.env.DM_STREAM_TIMEOUT;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -125,5 +126,5 @@ app.listen(8080, () => {
         app.timer = null;
     }
     if (app.proc)
-        app.timer = setTimeout(app.ffmpegCleanup, 3600*1000);
+        app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
 });
