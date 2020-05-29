@@ -1,6 +1,6 @@
 ## dreambox-streamer
 
-Docker image to stream tv channels in HLS.
+Docker container to stream tv channels in HLS.
 
 ```sh
 docker run \
