@@ -41,19 +41,9 @@ app.get('/', function(req, res, next){
     }).catch(function(reason) {
         response.send(reason);
     });;
-
-    //res.render('index', {title: "dreambox-streamer"});
-
-    //const fileDirectory = path.resolve(__dirname, '.', 'public');
-    //res.sendFile('index.html', {root: fileDirectory}, (err) => {
-    //    res.end();
-    //})
 })
 
 app.get('/stream', function(req, res, next){
-//app.use(function(req, res, next){
-
-
     let filepath = app.filepath;
 
     if (app.proc != null) {
@@ -109,9 +99,9 @@ app.get('/stream', function(req, res, next){
     }).then((state) => {
         console.log('redirecting to stream');
         res.end();
-        //res.redirect('/stream/stream.m3u8');
     }).catch((reason) => {
         console.log(reason);
+        next(reason);
     });
 
 });
