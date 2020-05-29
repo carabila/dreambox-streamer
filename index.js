@@ -9,8 +9,6 @@ const app = express();
 const host = process.env.DM_HOST;
 const audioBitRate = process.env.DM_AUDIO_BITRATE;
 
-dreambox.init(host);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -32,13 +30,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res, next){
 
     let response = res;
-    dreambox.getBouquets().then((ret) => {
-        console.log(ret);
-        dreambox.getServices(ret.e2service.e2servicereference).then((ret) => {
+    dreambox.init(host).then((ret) => {
+        dreambox.getBouquets().then((ret) => {
             console.log(ret);
-            response.render('index', {title: "dreambox-streamer", services: ret.e2service});
-        });
-    });
+            dreambox.getServices(ret.e2service.e2servicereference).then((ret) => {
+                console.log(ret);
+                response.render('index', {title: "dreambox-streamer", services: ret.e2service});
+            });
+        })
+    }).catch(function(reason) {
+        response.send(reason);
+    });;
 
     //res.render('index', {title: "dreambox-streamer"});
 

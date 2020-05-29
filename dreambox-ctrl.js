@@ -9,7 +9,7 @@ module.exports = {
         this.ax = axios.create({
             baseURL: 'http://'+dreamboxHost+'/web'
         });
-        this.request('/session').then((ret) => {
+        return this.request('/session').then((ret) => {
             this.sid = ret.e2sessionid;
         });
     },
