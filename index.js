@@ -7,6 +7,8 @@ const dreambox = require('./dreambox-ctrl');
 const app = express();
 
 const host = process.env.DM_HOST;
+const audioBitRate = process.env.DM_AUDIO_BITRATE;
+
 dreambox.init(host);
 
 // view engine setup
@@ -69,7 +71,7 @@ app.get('/stream', function(req, res, next){
         // set target codec
         .videoCodec('libx264')
         // set audio bitrate
-        .audioBitrate(256)
+        .audioBitrate(audioBitRate)
         // set audio codec
         .audioCodec('aac')
         .addOption('-f', 'hls')

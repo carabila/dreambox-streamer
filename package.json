@@ -9,6 +9,5 @@
     },
     "scripts": {
         "start": "node index.js",
-        "devel": "nodemon index.js"
     }
 }
