@@ -81,7 +81,7 @@ app.get('/stream', function(req, res, next){
             console.log('Spawned Ffmpeg with command: ' + commandLine);
         })
         .on('error', function(err) {
-            console.log('an error happened: ' + err.message);
+            console.log(err.message);
             reject(err);
         })
         // save to file
@@ -98,7 +98,8 @@ app.get('/stream', function(req, res, next){
         });
 
     }).then((state) => {
-        console.log('redirecting to stream');
+        console.log('set process timeout to '+streamTimeout+' secs');
+        app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
         res.end();
     }).catch((reason) => {
         console.log(reason);
@@ -125,6 +126,8 @@ app.listen(8080, () => {
         clearTimeout(app.timer);
         app.timer = null;
     }
-    if (app.proc)
+    if (app.proc) {
+        console.log('set process timeout to '+streamTimeout+' secs');
         app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
+    }
 });

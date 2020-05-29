@@ -1,4 +1,4 @@
-## myhome-mqtt-bridge
+## dreambox-streamer
 
 Docker image to stream tv channels in HLS.
 
