@@ -5,6 +5,8 @@ const path = require('path');
 const dreambox = require('./dreambox-ctrl');
 
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 const host = process.env.DM_HOST;
 const audioBitRate = process.env.DM_AUDIO_BITRATE;
@@ -23,7 +25,6 @@ app.ffmpegCleanup = function () {
     //    fs.unlinkSync(dirname +'/'+ fileName);
     //});
 };
-
 
 app.use('/stream', express.static(path.join(__dirname, 'stream')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -108,8 +109,23 @@ app.get('/stream', function(req, res, next){
 
 });
 
-app.listen(8080, () => {
-    console.log('listening on 8080');
+io.on('connection', socket => {
+    console.log('new client: ' + socket.id);
+    socket.on('Hi', data => {
+        console.log('received ping');
+        if (app.proc) {
+            console.log('reset set process timeout');
+            clearTimeout(app.timer);
+            app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
+        }
+    });
+    socket.on('disconnect', () => {
+        console.log(socket.id + ' disconnected');
+    });
+});
+
+server.listen(3000, () => {
+    console.log('express listening on 3000');
 
     app.proc = null;
     app.filepath = path.join(__dirname + '/stream/stream.m3u8');
@@ -120,14 +136,4 @@ app.listen(8080, () => {
         fs.unlinkSync(path.join(dirname, fileName));
     });
     
-}).on('connection', function(socket) {
-    console.log('new client connection');
-    if (app.timer) {
-        clearTimeout(app.timer);
-        app.timer = null;
-    }
-    if (app.proc) {
-        console.log('set process timeout to '+streamTimeout+' secs');
-        app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
-    }
 });

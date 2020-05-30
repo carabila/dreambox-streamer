@@ -8,4 +8,10 @@ $(function() {
             $("#player").trigger('load');
         });
     });
+
+    var socket = io();
+    socket.on('connect', function(){
+        // Send an initial message
+        setInterval( function(){socket.emit('Hi')}, 10000);
+    });
 });
