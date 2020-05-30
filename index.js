@@ -99,14 +99,12 @@ app.get('/stream', function(req, res, next){
         });
 
     }).then((state) => {
-        console.log('set process timeout to '+streamTimeout+' secs');
-        app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
+        console.log('streaming..');
         res.end();
     }).catch((reason) => {
         console.log(reason);
         next(reason);
     });
-
 });
 
 io.on('connection', socket => {
@@ -135,5 +133,4 @@ server.listen(3000, () => {
     fs.readdirSync(dirname).forEach(fileName => {
         fs.unlinkSync(path.join(dirname, fileName));
     });
-    
 });
