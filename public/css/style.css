@@ -31,7 +31,7 @@ body {
     position: relative;
     top: 0;
     _height: calc(100vh - 48px);
-    height: 100%;
+    height: 96%;
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
@@ -47,6 +47,7 @@ body {
   .sidebar .nav-link {
     font-weight: 500;
     color: #333;
+    border-top: 1px solid lightgrey;
   }
   
   .sidebar .nav-link .feather {

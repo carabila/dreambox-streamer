@@ -110,9 +110,8 @@ app.get('/stream', function(req, res, next){
 io.on('connection', socket => {
     console.log('new client: ' + socket.id);
     socket.on('Hi', data => {
-        console.log('received ping');
         if (app.proc) {
-            console.log('reset set process timeout');
+            console.log('reset ffmpeg timeout');
             clearTimeout(app.timer);
             app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
         }
