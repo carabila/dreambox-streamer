@@ -1,10 +1,9 @@
-
 $(function() {
-    $("a").click(function(){
+    $(".channel").click(function(){
         var that = this;
-        $(".channel").text("...wait");
-        $.get( "/stream?e2servicereference="+this.id, function() {
-            $(".channel").text(that.getAttribute("channel"));
+        $(".channel-name").text("...wait");
+        $.get( "/stream?play="+this.id+"&seek="+this.getAttribute("seek"), function() {
+            $(".channel-name").text(that.getAttribute("channel"));
             $("#player").trigger('load');
         });
     });

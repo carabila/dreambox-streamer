@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- link rel="icon" href="../../favicon.ico" -->
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <!-- Custom styles for this template -->
+    <link rel='stylesheet' href='/css/style.css' />
+
+</head>
+
+<body>
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <a class="nav-opt nav-link h4" href="/records">> Records</a>
+        <div class="sidebar-sticky" style="padding-bottom: 100px;">
+            <ul class="nav flex-column" >
+                <% services.forEach(function (service) { %>
+                    <li class="nav-item">
+                        <% var cmd = `http://${config.host}:8001/${service.e2servicereference}` %>
+                        <a class="nav-link channel" href="#" id="<%= cmd %>" channel="<%= service.e2servicename %>" seek="00:00:00">
+                            <%= service.e2servicename %>
+                        </a>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    </nav>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2 channel-name">&nbsp</h1>
+        </div>
+        <div id='video'>
+            <video id='player' style="width:100%" src="/stream/stream.m3u8" controls autoplay></video>
+        </div>
+    </main>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/underscore.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/socket.io.js"></script>
+
+<script src="/js/load.js"></script>
+
+</body>
+</html>

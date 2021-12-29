@@ -1,63 +1,44 @@
+//const { channel } = require('diagnostics_channel');
 const express = require('express');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
-const dreambox = require('./dreambox-ctrl');
 
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const host = process.env.DM_HOST;
-const audioBitRate = process.env.DM_AUDIO_BITRATE;
-const streamTimeout = process.env.DM_STREAM_TIMEOUT;
+const config = require('./config');
+const channels = require('./routes/channels');
+const records = require('./routes/records');
+const ffmpegUtils = require('./ffmpeg-utils.js')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.ffmpegCleanup = function () {
-    console.log('closing ffmpeg process');
-    app.proc.kill();
-    app.proc = null;
-    //var dirname = path.dirname(app.filepath);
-    //fs.readdirSync(dirname).forEach(fileName => {
-    //    fs.unlinkSync(dirname +'/'+ fileName);
-    //});
-};
+app.use('/', channels);
+app.use('/channels', channels);
+app.use('/records', records);
 
 app.use('/stream', express.static(path.join(__dirname, 'stream')));
+
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', function(req, res, next){
-
-    let response = res;
-    dreambox.init(host).then((ret) => {
-        dreambox.getBouquets().then((ret) => {
-            console.log(ret);
-            dreambox.getServices(ret.e2service.e2servicereference).then((ret) => {
-                console.log(ret);
-                response.render('index', {title: "dreambox-streamer", services: ret.e2service});
-            });
-        })
-    }).catch(function(reason) {
-        response.send(reason);
-    });;
-})
 
 app.get('/stream', function(req, res, next){
     let filepath = app.filepath;
 
-    if (app.proc != null) {
-        app.ffmpegCleanup();
+    if (ffmpegUtils.proc != null) {
+        ffmpegUtils.ffmpegCleanup();
     }
 
     new Promise((resolve,reject) => { 
         // make sure you set the correct path to your video file
-        app.proc = ffmpeg('http://'+host+':8001/'+req.query.e2servicereference, { timeout: 432000 })
+        ffmpegUtils.proc = ffmpeg(req.query.play, { timeout: 432000 })
         //.size('720x?')
-        .addOption('-map', '0:0')
-        .addOption('-map', '0:1')
+        .addOption(`-ss ${req.query.seek}`)
+        .addOption('-map', '0:v:0')
+        .addOption('-map', '0:a:1')
         // set video bitrate
         //.videoBitrate(1200)
         // set h264 preset
@@ -65,7 +46,7 @@ app.get('/stream', function(req, res, next){
         // set target codec
         .videoCodec('libx264')
         // set audio bitrate
-        .audioBitrate(audioBitRate)
+        .audioBitrate(config.audioBitRate)
         // set audio codec
         .audioCodec('aac')
         .addOption('-f', 'hls')
@@ -102,6 +83,7 @@ app.get('/stream', function(req, res, next){
         console.log('streaming..');
         res.end();
     }).catch((reason) => {
+        ffmpegUtils.ffmpegCleanup();
         console.log(reason);
         next(reason);
     });
@@ -110,10 +92,10 @@ app.get('/stream', function(req, res, next){
 io.on('connection', socket => {
     console.log('new client: ' + socket.id);
     socket.on('Hi', data => {
-        if (app.proc) {
+        if (ffmpegUtils.proc) {
             console.log('reset ffmpeg timeout');
             clearTimeout(app.timer);
-            app.timer = setTimeout(app.ffmpegCleanup, streamTimeout*1000);
+            app.timer = setTimeout(ffmpegUtils.ffmpegCleanup, config.streamTimeout*1000);
         }
     });
     socket.on('disconnect', () => {
@@ -124,7 +106,7 @@ io.on('connection', socket => {
 server.listen(3000, () => {
     console.log('express listening on 3000');
 
-    app.proc = null;
+    ffmpegUtils.proc = null;
     app.filepath = path.join(__dirname + '/stream/stream.m3u8');
     app.timer = null;
 

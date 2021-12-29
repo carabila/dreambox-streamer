@@ -31,5 +31,11 @@ module.exports = {
         return this.request('/getservices?sessionid='+this.sid+'&sRef='+refBouquet).then((ret) => {
             return ret.e2servicelist;
         });
-    }    
+    },
+
+    getMovies: function(refBouquet) {
+        return this.request('/movielist?sessionid='+this.sid).then((ret) => {
+            return ret.e2movielist;
+        });
+    }        
 };
