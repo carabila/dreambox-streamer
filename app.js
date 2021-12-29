@@ -37,8 +37,8 @@ app.get('/stream', function(req, res, next){
         ffmpegUtils.proc = ffmpeg(req.query.play, { timeout: 432000 })
         //.size('720x?')
         .addOption(`-ss ${req.query.seek}`)
-        .addOption('-map', '0:v:0')
-        .addOption('-map', '0:a:1')
+        .addOption('-map', '0:0')
+        .addOption('-map', '0:1')
         // set video bitrate
         //.videoBitrate(1200)
         // set h264 preset
