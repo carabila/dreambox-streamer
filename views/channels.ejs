@@ -25,8 +25,8 @@
             <ul class="nav flex-column" >
                 <% services.forEach(function (service) { %>
                     <li class="nav-item">
-                        <% var cmd = `http://${config.host}:8001/${service.e2servicereference}` %>
-                        <a class="nav-link channel" href="#" id="<%= cmd %>" channel="<%= service.e2servicename %>" seek="00:00:00">
+                        <% var uri = `http://${config.host}:8001/` %>
+                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2servicereference %>" channel="<%= service.e2servicename %>" seek="00:00:00">
                             <%= service.e2servicename %>
                         </a>
                     </li>

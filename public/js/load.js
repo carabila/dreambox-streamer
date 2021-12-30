@@ -2,7 +2,7 @@ $(function() {
     $(".channel").click(function(){
         var that = this;
         $(".channel-name").text("...wait");
-        $.get( "/stream?play="+this.id+"&seek="+this.getAttribute("seek"), function() {
+        $.get( "/stream?url="+this.id+"&ref="+this.getAttribute("ref")+"&seek="+this.getAttribute("seek"), function() {
             $(".channel-name").text(that.getAttribute("channel"));
             $("#player").trigger('load');
         });
