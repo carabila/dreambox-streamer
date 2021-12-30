@@ -26,7 +26,7 @@
                 <% services.forEach(function (service) { %>
                     <li class="nav-item">
                         <% var uri = `http://${config.host}:80/file?file=` %>
-                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2filename %>" channel="<%= service.e2title %>" seek="00:10:00">
+                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2filename %>" channel="<%= service.e2title %>">
                             <%= service.e2title %>
                         </a>
                     </li>
@@ -41,7 +41,7 @@
         <div id='video'>
             <video id='player' style="width:100%" src="/stream/stream.m3u8" controls autoplay></video>
         </div>
-        <span class="h4"><a href="#" style="margin: 20px;"><<</a><a href="#" style="margin: 20px;"><</a><a href="#" style="margin: 20px;">></a><a href="#" style="margin: 20px;">>></a></span>
+        <span class="h4"><a href="#" id="frev" class="pwd-cmd frev" style="margin: 20px;"><<</a><a href="#" class="pwd-cmd" id="rev" style="margin: 20px;"><</a><a href="#" class="pwd-cmd" id="fwd" style="margin: 20px;">></a><a href="#" class="pwd-cmd" id="ffwd" style="margin: 20px;">>></a></span>
     </main>
 
 <!-- Bootstrap core JavaScript

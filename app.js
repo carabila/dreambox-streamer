@@ -36,25 +36,21 @@ app.get('/stream', function(req, res, next){
         // make sure you set the correct path to your video file
         ffmpegUtils.proc = ffmpeg(req.query.url+encodeURIComponent(req.query.ref), { timeout: 432000 })
         //.size('720x?')
-        //.seekInput(req.query.seek)
-        .addOption('-map', '0:v:0')
-        .addOption('-map', '0:a:1')
-        // set video bitrate
-        //.videoBitrate(1200)
+        .seekInput(req.query.seek)
+        .addOption('-map', '0:v')
+        .addOption('-map', '0:a')
         // set target codec
         .videoCodec('libx264')
         // set h264 preset
         .addOption('-preset','superfast')
-        //.addOption('-tune', 'zerolatency')
-        //.addOption('-pix_fmt', 'yuv420p')
-        // set audio bitrate
-        .audioBitrate(config.audioBitRate)
         // set audio codec
         .audioCodec('aac')
-        .addOption('-f', 'hls')
+        // set audio bitrate
+        .audioBitrate(config.audioBitRate)
+        .format('hls')
         .addOption('-hls_allow_cache', 0)
         // set hls segments time
-        //.addOption('-hls_init_time', 4)
+        //.addOption('-hls_init_time', 2)
         .addOption('-hls_time', 2)
         // include all the segments in the list
         .addOption('-hls_list_size', 5)

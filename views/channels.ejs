@@ -26,7 +26,7 @@
                 <% services.forEach(function (service) { %>
                     <li class="nav-item">
                         <% var uri = `http://${config.host}:8001/` %>
-                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2servicereference %>" channel="<%= service.e2servicename %>" seek="00:00:00">
+                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2servicereference %>" channel="<%= service.e2servicename %>">
                             <%= service.e2servicename %>
                         </a>
                     </li>
