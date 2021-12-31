@@ -89,15 +89,16 @@ app.get('/stream', function(req, res, next){
 
 io.on('connection', socket => {
     console.log('new client: ' + socket.id);
-    socket.on('Hi', data => {
-        if (ffmpegUtils.proc) {
-            console.log('reset ffmpeg timeout');
-            clearTimeout(app.timer);
-            app.timer = setTimeout(ffmpegUtils.ffmpegCleanup, config.streamTimeout*1000);
-        }
-    });
+    // socket.on('Hi', data => {
+    //     if (ffmpegUtils.proc) {
+    //         console.log('reset ffmpeg timeout');
+    //         clearTimeout(app.timer);
+    //         app.timer = setTimeout(ffmpegUtils.ffmpegCleanup, config.streamTimeout*1000);
+    //     }
+    // });
     socket.on('disconnect', () => {
         console.log(socket.id + ' disconnected');
+        ffmpegUtils.ffmpegCleanup();
     });
 });
 
