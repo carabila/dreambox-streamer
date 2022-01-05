@@ -6,9 +6,13 @@ $(function() {
         seek = 0;
         var that = this;
         $(".channel-name").text("...wait");
+        $(".event-title").html("&nbsp");
+        $(".event-description").html("&nbsp");
         url = "/stream?url="+this.id+"&ref="+this.getAttribute("ref");
         $.get(url+"&seek=0", function() {
-            $(".channel-name").text(that.getAttribute("channel"));
+            $(".channel-name").text(that.getAttribute("channel").split('|')[0]);
+            $(".event-title").text(that.getAttribute("channel").split('|')[1]);
+            $(".event-description").text(that.getAttribute("channel").split('|')[2]);
             $("#player").trigger('load');
         });
     });

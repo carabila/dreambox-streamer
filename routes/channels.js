@@ -9,14 +9,14 @@ router.get('/', function(req, res, next){
     dreambox.init(config.host).then((ret) => {
         dreambox.getBouquets().then((ret) => {
             console.log(ret);
-            dreambox.getServices(ret.e2service.e2servicereference).then((ret) => {
+            dreambox.getEpgNow(ret.e2service.e2servicereference).then((ret) => {
                 console.log(ret);
-                response.render('channels', {title:"dreambox-streamer", services:ret.e2service, config:config});
+                response.render('channels', {title:"dreambox-streamer", services:ret.e2event, config:config});
             });
         })
     }).catch(function(reason) {
         response.send(reason);
-    });;
+    });
 })
 
 module.exports = router;

@@ -33,6 +33,12 @@ module.exports = {
         });
     },
 
+    getEpgNow: function(refBouquet) {
+        return this.request('/epgnow?sessionid='+this.sid+'&bRef='+refBouquet).then((ret) => {
+            return ret.e2eventlist;
+        });
+    },        
+
     getMovies: function(refBouquet) {
         return this.request('/movielist?sessionid='+this.sid).then((ret) => {
             return ret.e2movielist;

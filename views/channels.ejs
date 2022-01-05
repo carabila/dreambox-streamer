@@ -26,8 +26,9 @@
                 <% services.forEach(function (service) { %>
                     <li class="nav-item">
                         <% var uri = `http://${config.host}:8001/` %>
-                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2servicereference %>" channel="<%= service.e2servicename %>">
-                            <%= service.e2servicename %>
+                        <a class="nav-link channel" href="#" id="<%= uri %>" ref="<%= service.e2eventservicereference %>" channel="<%= service.e2eventservicename %>|<%= service.e2eventtitle %>|<%= service.e2eventdescription %><%= service.e2eventdescriptionextended %>">
+                            <b><%= service.e2eventservicename %></b><br>
+                            <%= service.e2eventtitle %>
                         </a>
                     </li>
                 <% }); %>
@@ -37,10 +38,12 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2 channel-name">&nbsp</h1>
+            <span class="event-title">&nbsp</span>
         </div>
         <div id='video'>
             <video id='player' style="width:100%" src="/stream/stream.m3u8" controls autoplay></video>
         </div>
+        <span class="event-description">&nbsp</span>
     </main>
 
 <!-- Bootstrap core JavaScript

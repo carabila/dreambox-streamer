@@ -13,7 +13,7 @@ router.get('/', function(req, res, next){
        })
     }).catch(function(reason) {
         response.send(reason);
-    });;
+    });
 })
 
 module.exports = router;
