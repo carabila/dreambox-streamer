@@ -81,7 +81,6 @@ app.get('/stream', function(req, res, next){
         console.log('streaming..');
         res.end();
     }).catch((reason) => {
-        ffmpegUtils.ffmpegCleanup();
         console.log(reason);
         next(reason);
     });
@@ -105,9 +104,8 @@ io.on('connection', socket => {
 server.listen(3000, () => {
     console.log('express listening on 3000');
 
-    ffmpegUtils.proc = null;
     app.filepath = path.join(__dirname + '/stream/stream.m3u8');
-    app.timer = null;
+    // app.timer = null;
 
     let dirname = path.dirname(app.filepath);
     fs.readdirSync(dirname).forEach(fileName => {
