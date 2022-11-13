@@ -35,14 +35,14 @@ app.get('/stream', function(req, res, next){
     new Promise((resolve,reject) => { 
         // make sure you set the correct path to your video file
         ffmpegUtils.proc = ffmpeg(req.query.url+encodeURIComponent(req.query.ref), { timeout: 432000 })
+        .inputOptions(['-hwaccel vaapi', '-hwaccel_output_format vaapi', '-hwaccel_device /dev/dri/renderD128'])
         //.size('720x?')
         .seekInput(req.query.seek)
+
+        .addOption('-c:v', 'h264_vaapi')
         .addOption('-map', '0:v')
         .addOption('-map', '0:a')
-        // set target codec
-        .videoCodec('libx264')
-        // set h264 preset
-        .addOption('-preset','superfast')
+ 
         // set audio codec
         .audioCodec('aac')
         // set audio bitrate
