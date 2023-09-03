@@ -34,38 +34,73 @@ app.get('/stream', function(req, res, next){
 
     new Promise((resolve,reject) => { 
         // make sure you set the correct path to your video file
-        ffmpegUtils.proc = ffmpeg(req.query.url+encodeURIComponent(req.query.ref), { timeout: 432000 })
-        //.size('720x?')
-        .seekInput(req.query.seek)
-        .addOption('-map', '0:v')
-        .addOption('-map', '0:a')
-        // set target codec
-        .videoCodec('libx264')
-        // set h264 preset
-        .addOption('-preset','superfast')
-        // set audio codec
-        .audioCodec('aac')
-        // set audio bitrate
-        .audioBitrate(config.audioBitRate)
-        .format('hls')
-        .addOption('-hls_allow_cache', 0)
-        // set hls segments time
-        //.addOption('-hls_init_time', 2)
-        .addOption('-hls_time', 2)
-        // include all the segments in the list
-        .addOption('-hls_list_size', 5)
-        .addOption('-hls_flags', '+delete_segments+split_by_time')
 
-        // setup event handlers
-        .on('start', function(commandLine) {
-            console.log('Spawned Ffmpeg with command: ' + commandLine);
-        })
-        .on('error', function(err) {
-            console.log(err.message);
-            reject(err);
-        })
-        // save to file
-        .save(filepath);
+        if (req.query.url.includes('file')) {
+            ffmpegUtils.proc = ffmpeg(req.query.url+encodeURIComponent(req.query.ref), { timeout: 432000 })
+            .native()
+            .seekInput(req.query.seek)
+            .addOption('-map', '0:v')
+            .addOption('-map', '0:a')
+            // set target codec
+            .videoCodec('libx264')
+            // set h264 preset
+            .addOption('-preset','superfast')
+            // set audio codec
+            .audioCodec('aac')
+            // set audio bitrate
+            .audioBitrate(config.audioBitRate)
+            .format('hls')
+            .addOption('-hls_allow_cache', 0)
+            // set hls segments time
+            //.addOption('-hls_init_time', 2)
+            .addOption('-hls_time', 2)
+            // include all the segments in the list
+            .addOption('-hls_list_size', 5)
+            .addOption('-hls_flags', '+delete_segments+split_by_time')
+    
+            // setup event handlers
+            .on('start', function(commandLine) {
+                console.log('Spawned Ffmpeg with command: ' + commandLine);
+            })
+            .on('error', function(err) {
+                console.log(err.message);
+                reject(err);
+            })
+            // save to file
+            .save(filepath);
+        }
+        else {
+            ffmpegUtils.proc = ffmpeg(req.query.url+encodeURIComponent(req.query.ref), { timeout: 432000 })
+            .addOption('-map', '0:v')
+            .addOption('-map', '0:a')
+            // set target codec
+            .videoCodec('libx264')
+            // set h264 preset
+            .addOption('-preset','superfast')
+            // set audio codec
+            .audioCodec('aac')
+            // set audio bitrate
+            .audioBitrate(config.audioBitRate)
+            .format('hls')
+            .addOption('-hls_allow_cache', 0)
+            // set hls segments time
+            //.addOption('-hls_init_time', 2)
+            .addOption('-hls_time', 2)
+            // include all the segments in the list
+            .addOption('-hls_list_size', 5)
+            .addOption('-hls_flags', '+delete_segments+split_by_time')
+    
+            // setup event handlers
+            .on('start', function(commandLine) {
+                console.log('Spawned Ffmpeg with command: ' + commandLine);
+            })
+            .on('error', function(err) {
+                console.log(err.message);
+                reject(err);
+            })
+            // save to file
+            .save(filepath);
+        }
 
         var watcher = fs.watch(path.dirname(filepath),function (event, who){
             if (event === 'rename' && who === path.basename(filepath)) {

@@ -1,18 +1,14 @@
-FROM node:12.20.1-alpine3.9
-
-WORKDIR '/app'
-
+FROM node:lts-alpine
+ENV NODE_ENV=production
 ENV DM_HOST '10.0.10.33'
 ENV DM_AUDIO_BITRATE 256
 ENV DM_STREAM_TIMEOUT 20
-
-COPY package.json .
-RUN npm install
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --production --silent && mv node_modules ../
 RUN apk add  --no-cache ffmpeg
-
 COPY . .
-
 EXPOSE 3000
-
-CMD ["npm", "run", "start"]
-
+RUN chown -R node /usr/src/app
+USER node
+CMD ["npm", "start"]
