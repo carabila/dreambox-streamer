@@ -50,12 +50,11 @@ app.get('/stream', function(req, res, next){
             // set audio bitrate
             .audioBitrate(config.audioBitRate)
             .format('hls')
-            .addOption('-hls_allow_cache', 0)
+            //.addOption('-hls_allow_cache', 0)
             // set hls segments time
-            //.addOption('-hls_init_time', 2)
-            .addOption('-hls_time', 2)
+            //.addOption('-hls_time', 2)
             // include all the segments in the list
-            .addOption('-hls_list_size', 5)
+            //.addOption('-hls_list_size', 5)
             .addOption('-hls_flags', '+delete_segments+split_by_time')
     
             // setup event handlers
@@ -82,12 +81,11 @@ app.get('/stream', function(req, res, next){
             // set audio bitrate
             .audioBitrate(config.audioBitRate)
             .format('hls')
-            .addOption('-hls_allow_cache', 0)
+            //.addOption('-hls_allow_cache', 0)
             // set hls segments time
-            //.addOption('-hls_init_time', 2)
-            .addOption('-hls_time', 2)
+            //.addOption('-hls_time', 2)
             // include all the segments in the list
-            .addOption('-hls_list_size', 5)
+            //.addOption('-hls_list_size', 5)
             .addOption('-hls_flags', '+delete_segments+split_by_time')
     
             // setup event handlers
@@ -140,10 +138,5 @@ server.listen(3000, () => {
     console.log('express listening on 3000');
 
     app.filepath = path.join(__dirname + '/stream/stream.m3u8');
-    // app.timer = null;
-
-    let dirname = path.dirname(app.filepath);
-    fs.readdirSync(dirname).forEach(fileName => {
-        fs.unlinkSync(path.join(dirname, fileName));
-    });
+    ffmpegUtils.dirname = path.dirname(app.filepath);
 });
