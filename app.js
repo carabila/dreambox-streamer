@@ -50,9 +50,9 @@ app.get('/stream', function(req, res, next){
             // set audio bitrate
             .audioBitrate(config.audioBitRate)
             .format('hls')
-            //.addOption('-hls_allow_cache', 0)
+            .addOption('-hls_allow_cache', 0)
             // set hls segments time
-            //.addOption('-hls_time', 2)
+            .addOption('-hls_time', 2)
             // include all the segments in the list
             //.addOption('-hls_list_size', 5)
             .addOption('-hls_flags', '+delete_segments+split_by_time')
@@ -81,9 +81,9 @@ app.get('/stream', function(req, res, next){
             // set audio bitrate
             .audioBitrate(config.audioBitRate)
             .format('hls')
-            //.addOption('-hls_allow_cache', 0)
+            .addOption('-hls_allow_cache', 0)
             // set hls segments time
-            //.addOption('-hls_time', 2)
+            .addOption('-hls_time', 2)
             // include all the segments in the list
             //.addOption('-hls_list_size', 5)
             .addOption('-hls_flags', '+delete_segments+split_by_time')
